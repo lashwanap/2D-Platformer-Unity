@@ -13,6 +13,10 @@ public class Events : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
+    public void Restart()
+    {
+        SceneManager.LoadScene(1);
+    }
     public void Quit()
     {
         Application.Quit();

@@ -1,20 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using UnityEngine.SceneManagement;
+
 
 public class HealthManager : MonoBehaviour
 {
     public static HealthManager instance;
     public GameObject damageEffect;
 
-    private int MaxHealth = 6;
+    private int MaxHealth = 3;
     public int currentHealth;
 
     [SerializeField] private Image[] hearts;
     [SerializeField] private Sprite FullHeartSprite;
-    [SerializeField] private Sprite HalfHeartSprite;
     [SerializeField] private Sprite EmptyHeartSprite;
 
     private GameObject Player;
+
+
 
     private void Awake()
     {
@@ -27,49 +31,67 @@ public class HealthManager : MonoBehaviour
         currentHealth = MaxHealth;
         DisplayHearts();
     }
-   
-  
+
+
+
 
     public void HurtPlayer()
     {
+        if (currentHealth <= 0)
+            return; // Empêche d'aller plus loin si déjà à 0
 
-        if (currentHealth > 0)
+        currentHealth--;
+        DisplayHearts();
+
+
+        if (damageEffect != null && Player != null)
         {
-            currentHealth--;
-            DisplayHearts();
-            //Player.GetComponent<PlayerController>().Knockback();
+            Instantiate(damageEffect, Player.transform.position, Quaternion.identity);
         }
-        else if (currentHealth <= 0)
+
+
+        if (currentHealth <= 0)
         {
+            SceneManager.LoadScene("GameOver");
+
             GameManager.instance.Death();
         }
-        
-        Instantiate(damageEffect, Player.transform.position, Quaternion.identity);
+
+        else
+        {
+
+            UIManager.instance.fadeToBlack = true;
+            UIManager.instance.StartCoroutine(RespawnSequence());
+        }
     }
+
+
 
     public void DisplayHearts()
     {
-        int fullHeartsCount = currentHealth / 2; // Calculate the number of full hearts
-        bool hasHalfHeart = (currentHealth % 2) == 1; // Check if there's a half heart needed
-
         for (int i = 0; i < hearts.Length; i++)
         {
-            if (i < fullHeartsCount)
+            if (i < currentHealth)
             {
-                // Heart should be full
                 hearts[i].sprite = FullHeartSprite;
-            }
-            else if (hasHalfHeart && i == fullHeartsCount)
-            {
-                // Heart should be half
-                hearts[i].sprite = HalfHeartSprite;
             }
             else
             {
-                // Heart should be empty
                 hearts[i].sprite = EmptyHeartSprite;
             }
         }
+    }
+
+
+    private IEnumerator RespawnSequence()
+    {
+        yield return new WaitForSeconds(1f); // Laisse le fadeToBlack se faire
+
+        Player.GetComponent<PlayerController>().Respawn();
+
+        yield return new WaitForSeconds(0.5f); // Pause si tu veux
+
+        UIManager.instance.fadeFromBlack = true;
     }
 
     

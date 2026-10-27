@@ -23,10 +23,16 @@ public class PlayerController : MonoBehaviour
     public Animator playeranim;
 
     public Controls controlmode;
+
+    public int score = 0;
+    public Text scoreText;
+
    
 
     private float moveX;
     public bool isPaused = false;
+    private Vector3 respawnPoint;
+
 
     public ParticleSystem footsteps;
     private ParticleSystem.EmissionModule footEmissions;
@@ -51,6 +57,9 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         footEmissions = footsteps.emission;
+
+        respawnPoint = transform.position;
+
 
         if (controlmode == Controls.mobile)
         {
@@ -113,15 +122,18 @@ public class PlayerController : MonoBehaviour
 
         //impactEffect
 
-        if(!wasonGround && isGroundedBool)
+        if (!wasonGround && isGroundedBool)
         {
             ImpactEffect.gameObject.SetActive(true);
             ImpactEffect.Stop();
-            ImpactEffect.transform.position = new Vector2(footsteps.transform.position.x,footsteps.transform.position.y-0.2f);
+            ImpactEffect.transform.position = new Vector2(footsteps.transform.position.x, footsteps.transform.position.y - 0.2f);
             ImpactEffect.Play();
+
+            GameAudioManager.instance.PlayJump();
         }
 
         wasonGround = isGroundedBool;
+
 
         
     }
@@ -141,6 +153,12 @@ public class PlayerController : MonoBehaviour
         playeranim.SetBool("isGrounded", isGroundedBool);
        
     }
+
+    public void UpdateScoreUI()
+{
+    scoreText.text = "Score: " + score;
+}
+
 
     private void FlipSprite(float direction)
     {
@@ -173,6 +191,7 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, 0); // Zero out vertical velocity
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         playeranim.SetTrigger("jump");
+        GameAudioManager.instance.PlayJump();
     }
 
     private bool IsGrounded()
@@ -182,12 +201,20 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength, groundLayer);
         return hit.collider != null;
     }
+
+    public void Respawn()
+    {
+        rb.velocity = Vector2.zero;
+        transform.position = respawnPoint;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "killzone")
+        if (collision.gameObject.CompareTag("killzone"))
         {
-            GameManager.instance.Death();
+            HealthManager.instance.HurtPlayer(); // Retire un cœur
         }
+
     }
     
 

@@ -4,39 +4,42 @@ using UnityEngine;
 
 public class pickup : MonoBehaviour
 {
-    public enum pickupType { coin,gem,health}
+    public enum pickupType { coin, gem, health }
 
     public pickupType pt;
+
     [SerializeField] GameObject PickupEffect;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(pt == pickupType.coin)
+        if (!collision.CompareTag("Player")) return;
+
+        PlayerController player = collision.GetComponent<PlayerController>();
+        if (player == null) return;
+
+        switch (pt)
         {
-            if(collision.gameObject.tag == "Player")
-            {
+            case pickupType.coin:
                 GameManager.instance.IncrementCoinCount();
-           
-                Instantiate(PickupEffect, transform.position, Quaternion.identity);
+                player.score += 1;
+                GameAudioManager.instance.PlayCoin();
+                break;
 
-                Destroy(this.gameObject,0.2f);
-                
-            }
-            
-        }
-
-        if (pt == pickupType.gem)
-        {
-            if (collision.gameObject.tag == "Player")
-            {
+            case pickupType.gem:
                 GameManager.instance.IncrementGemCount();
-            
-                Instantiate(PickupEffect, transform.position, Quaternion.identity);
+                player.score += 1;
+                player.UpdateScoreUI();
+                GameAudioManager.instance.PlayCoin();
+                break;
 
-                Destroy(this.gameObject, 0.2f);
-
-            }
-
+            case pickupType.health:
+                // Si tu veux plus tard : player.RestoreHealth();
+                break;
         }
+
+        if (PickupEffect != null)
+            Instantiate(PickupEffect, transform.position, Quaternion.identity);
+
+        Destroy(this.gameObject, 0.2f);
     }
 }

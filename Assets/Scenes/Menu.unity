@@ -385,7 +385,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2D TILEMAP PLATFORMER
+  m_text: "Tiko\u2019s Tale"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -729,6 +729,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 668652775}
   m_CullTransparentMesh: 1
+--- !u!1 &1001331590
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1001331592}
+  - component: {fileID: 1001331591}
+  m_Layer: 0
+  m_Name: GameAudioManager  (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1001331591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001331590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b5d9acc5c69f240a9e607c1bbabd04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  introMusic: {fileID: 8300000, guid: 7c5a5629a8280ef4c812fb7e6e432c38, type: 3}
+  gameplayMusic: {fileID: 8300000, guid: 91e1cc7d350ffaa4ebc36cda0ad9777f, type: 3}
+  clickSound: {fileID: 8300000, guid: a4625a75ce65ca1439474ca8d114344d, type: 3}
+  gameOverSound: {fileID: 8300000, guid: 692082dbcbe274f4e80ea91856673586, type: 3}
+  coinSound: {fileID: 8300000, guid: 7e1f5624fc20e3346b4a4158629d7afd, type: 3}
+  jumpSound: {fileID: 8300000, guid: 254b577f750603d4f88240810c18890a, type: 3}
+--- !u!4 &1001331592
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001331590}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.1616881, y: -3.9751449, z: -0.51129824}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1477322799
 GameObject:
   m_ObjectHideFlags: 0
@@ -1152,3 +1202,4 @@ SceneRoots:
   - {fileID: 1723646452}
   - {fileID: 62652548}
   - {fileID: 1620612799}
+  - {fileID: 1001331592}
